@@ -7,6 +7,9 @@ var logger = require('morgan');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 
+const mongoose = require('mongoose');
+mongoose.connect('mongodb://localhost:27017/currencyapp');
+
 var app = express();
 
 // view engine setup
