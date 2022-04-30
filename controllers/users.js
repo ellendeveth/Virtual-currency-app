@@ -1,4 +1,4 @@
-//const jwt = require('jsonwebtoken');
+const jwt = require('jsonwebtoken');
 const User = require('../models/users');
 const bcrypt = require('bcrypt');
 
@@ -7,7 +7,7 @@ const signup = (req, res, next) => {
         if (user.length >= 1) {
             //er bestaat al een user met deze email
             return res.json({
-                status: 'error',
+                status: 'error0',
                 message: 'User already exists'
             })
         } else {
@@ -15,7 +15,7 @@ const signup = (req, res, next) => {
                 if (err) {
                     console.log(err);
                     return res.json({
-                        "status": "error",
+                        status: "error",
                     });
                 } else {
                     const user = new User({
@@ -48,7 +48,40 @@ const signup = (req, res, next) => {
 };
 
 const login = (req, res, next) => {
-    
+    User.find({email: req.body.email}).exec().then(user => {
+        if (user.length < 1) {
+            //user doesnt exist
+            return res.json({
+                status: 'error',
+                message: "Authorization failed"
+            })
+        }
+        bcrypt.compare(req.body.password, user[0].password, (err, result) => {
+            if (err) {
+                return res.json({
+                    status: 'error',
+                    message: 'Authorization failed'
+                })
+            }
+            if (result) {
+                const token = jwt.sign({
+                    email: user[0].email,
+                    userId: user[0]._id
+                }, 'secret', {
+                    expiresIn: "1h"
+                });
+                return res.json({
+                    status: 'success',
+                    message: 'Auth successful',
+                    token: token
+                })
+            }
+            res.json({
+                status: 'error',
+                message: 'Auth failed'
+            })
+        })
+    })
 };
 
 module.exports.signup = signup;
