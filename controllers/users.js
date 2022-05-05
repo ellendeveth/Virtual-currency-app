@@ -1,13 +1,14 @@
 const jwt = require('jsonwebtoken');
 const User = require('../models/users');
 const bcrypt = require('bcrypt');
+let config = require('../config/config');
 
 const signup = (req, res, next) => {
     User.find({email: req.body.email}).exec().then(user => {
         if (user.length >= 1) {
             //er bestaat al een user met deze email
             return res.json({
-                status: 'error0',
+                status: 'error',
                 message: 'User already exists'
             })
         } else {
@@ -67,7 +68,7 @@ const login = (req, res, next) => {
                 const token = jwt.sign({
                     email: user[0].email,
                     userId: user[0]._id
-                }, 'secret', {
+                }, config.passwordToken, {
                     expiresIn: "1h"
                 });
                 return res.json({
