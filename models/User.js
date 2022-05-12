@@ -9,6 +9,7 @@ const userSchema = new Schema({
         match: /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/
     },
     password: String,
+    balance: Number,
 });
 
 const User = mongoose.model('User', userSchema);
