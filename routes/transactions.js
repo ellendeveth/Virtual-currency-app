@@ -3,13 +3,14 @@ var router = express.Router();
 const transactionsController = require('../controllers/transactions');
 const checkAuth = require('../middleware/check-auth');
 
-/* GET users listing. */
-router.get('/', function(req, res, next) {
-  res.send('respond with a resource');
-});
-
-router.post('/transactions', checkAuth, transactionsController.add);
-router.get('/transactions', checkAuth, transactionsController.get);
+//add transaction
+router.post('/', checkAuth, transactionsController.add);
+//get all transactions
+router.get('/', checkAuth, transactionsController.getAll);
+//get transaction by id
+router.get('/:id', checkAuth, transactionsController.getById);
+//show per user coins
+//router.get('/leaderboard', checkAuth, transactionsController.getByUser);
 
 
 module.exports = router;
