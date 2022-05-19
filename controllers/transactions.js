@@ -1,10 +1,14 @@
 const Transaction = require('../models/Transaction');
+const jwt = require("jsonwebtoken");
 
 const add = (req, res, next) => {
+    let token = req.headers.authorization;
+    let decode = jwt.decode(token).userId;
+   
     // make transaction possible
     const transaction = new Transaction({
         amount: req.body.amount,
-        sender: req.body.sender,
+        sender: decode,
         receiver: req.body.receiver,
         reason: req.body.reason
     });
