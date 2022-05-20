@@ -67,11 +67,19 @@ const getAll = (req, res, next) => {
     
     Transaction.find({$or: [{"sender": id}, {"receiver": username}]}, (err, docs)=>{
         if(!err){
-            res.json({
-                "status": "success",
-                "data": {
-                    "transactions": docs,
-                    
+            User.find({"receiver": username}, (err, doc)=>{
+                if(!err){
+                    res.json({
+                        "status": "success",
+                        "data": {
+                            "user": doc,
+                            "transactions": docs,
+                        }
+                    })
+                } else {
+                    res.json({
+                        "status": "error"
+                    })
                 }
             })
         } else {
