@@ -31,7 +31,7 @@ const signup = (req, res, next) => {
                         lastname: req.body.lastname,
                         email: req.body.email, 
                         password: hash,
-                        balance: 10
+                        balance: 100
                     });
                     user.save()
                     .then(result => {
