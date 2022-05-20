@@ -78,14 +78,16 @@ const login = (req, res, next) => {
             if (result) {
                 const token = jwt.sign({
                     email: user[0].email,
-                    userId: user[0]._id
+                    userId: user[0]._id,
+                    firstname: user[0].firstname,
                 }, config.passwordToken, {
                     expiresIn: "1h"
                 });
                 return res.json({
                     status: 'success',
                     message: 'Auth successful',
-                    token: token
+                    token: token,
+                    firstname: user[0].firstname,
                 })
             }
             res.json({
