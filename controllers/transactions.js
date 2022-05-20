@@ -60,8 +60,12 @@ const add = async (req, res, next) => {
 }
 
 const getAll = (req, res, next) => {
-    // get all transactions
-    Transaction.find((err, docs)=>{
+    // get all transactions from user
+    let token = req.headers.authorization;
+    let id = jwt.decode(token).userId;
+    let username = jwt.decode(token).firstname;
+    
+    Transaction.find({$or: [{"sender": id}, {"receiver": username}]}, (err, docs)=>{
         if(!err){
             res.json({
                 "status": "success",
