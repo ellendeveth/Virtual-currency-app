@@ -8,6 +8,7 @@ const checkAuth = require('../middleware/check-auth');
 router.get('/', checkAuth, users.getUser);
 // get user amount
 router.get('/amount', checkAuth, users.getAmount);
+router.get('/leaderboard', checkAuth, users.getAll);
 
 router.post('/test', checkAuth, function(req, res, next) {
   res.send('respond with a resource');

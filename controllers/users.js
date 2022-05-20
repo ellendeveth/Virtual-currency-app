@@ -38,5 +38,24 @@ const getAmount = (req, res, next) => {
     });
 };
 
+const getAll = (req, res, next) => {
+    User.find({}, (err, docs)=>{
+        if(!err){
+            res.json({
+                "status": "success",
+                "data": {
+                    "users": docs,
+                }
+            })
+        } else {
+            res.json({
+                "status": "error"
+            })
+        }
+    })
+};
+
+
 module.exports.getUser = getUser;
 module.exports.getAmount = getAmount;
+module.exports.getAll = getAll;
