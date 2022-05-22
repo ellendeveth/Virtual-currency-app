@@ -13,7 +13,8 @@ const getUser = (req, res, next) => {
             })
         } else {
             res.json({
-                "status": "error"
+                "status": "error",
+                "message": "Er ging iets mis, probeer opnieuw."
             })
         }
     })
@@ -32,7 +33,8 @@ const getAmount = (req, res, next) => {
         }
         else {
             res.json({
-                "error": err
+                "error": err,
+                "message": "Er ging iets mis, probeer opnieuw."
             });
         }
     });
