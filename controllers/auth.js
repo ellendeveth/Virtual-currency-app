@@ -4,7 +4,7 @@ const bcrypt = require('bcrypt');
 let config = require('../config/config');
 
 const signup = (req, res, next) => {
-    User.find({email: req.body.email}).exec().then(user => {
+    User.find({ email: req.body.email }).exec().then(user => {
         let email = req.body.email;
         if (user.length >= 1) {
             //er bestaat al een user met deze email
@@ -12,8 +12,8 @@ const signup = (req, res, next) => {
                 status: 'error',
                 message: 'User already exists'
             })
-        } 
-        if(!email.includes("@student.thomasmore.be")){
+        }
+        if (!email.includes("@student.thomasmore.be")) {
             return res.json({
                 "status": 'error',
                 "message": 'Please use a valid student email'
@@ -27,40 +27,42 @@ const signup = (req, res, next) => {
                     });
                 } else {
                     const user = new User({
-                        firstname: req.body.firstname, 
+                        username: req.body.username,
+                        firstname: req.body.firstname,
                         lastname: req.body.lastname,
-                        email: req.body.email, 
+                        email: req.body.email,
                         password: hash,
                         balance: 100
                     });
                     user.save()
-                    .then(result => {
-                        console.log(result);
-                        res.json({
-                            "status": 'success',
-                            "data": {
-                                "firstname": result.firstname,
-                                "lastname": result.lastname,
-                                "password": result.password,
-                                "balance": result.balance,
-                            }
+                        .then(result => {
+                            console.log(result);
+                            res.json({
+                                "status": 'success',
+                                "data": {
+                                    "username": result.username,
+                                    "firstname": result.firstname,
+                                    "lastname": result.lastname,
+                                    "password": result.password,
+                                    "balance": result.balance,
+                                }
+                            });
+                        }).catch(err => {
+                            console.log(err);
+                            res.json({
+                                "status": 'error'
+                            })
                         });
-                    }).catch(err => {
-                        console.log(err);
-                        res.json({
-                            "status": 'error'
-                        })
-                    });
                 }
             })
-            
+
         }
-    }); 
-   
+    });
+
 };
 
 const login = (req, res, next) => {
-    User.find({email: req.body.email}).exec().then(user => {
+    User.find({ email: req.body.email }).exec().then(user => {
         if (user.length < 1) {
             //user doesnt exist
             return res.json({
@@ -79,7 +81,7 @@ const login = (req, res, next) => {
                 const token = jwt.sign({
                     email: user[0].email,
                     userId: user[0]._id,
-                    firstname: user[0].firstname,
+                    username: user[0].username,
                 }, config.passwordToken, {
                     expiresIn: "1h"
                 });
@@ -87,7 +89,7 @@ const login = (req, res, next) => {
                     status: 'success',
                     message: 'Auth successful',
                     token: token,
-                    firstname: user[0].firstname,
+                    username: user[0].username,
                 })
             }
             res.json({
