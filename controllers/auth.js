@@ -10,13 +10,13 @@ const signup = (req, res, next) => {
             //er bestaat al een user met deze email
             return res.json({
                 status: 'error',
-                message: 'User already exists'
+                message: 'Deze gebruiker bestaat al.'
             })
         }
         if (!email.includes("@student.thomasmore.be")) {
             return res.json({
                 "status": 'error',
-                "message": 'Please use a valid student email'
+                "message": 'Gebruik een correct studenten email.'
             })
         } else {
             bcrypt.hash(req.body.password, 10, (err, hash) => {
@@ -24,6 +24,7 @@ const signup = (req, res, next) => {
                     console.log(err);
                     return res.json({
                         status: "error",
+                        message: "Er ging iets mis, probeer opnieuw."
                     });
                 } else {
                     const user = new User({
@@ -50,7 +51,8 @@ const signup = (req, res, next) => {
                         }).catch(err => {
                             console.log(err);
                             res.json({
-                                "status": 'error'
+                                "status": 'error',
+                                "message": 'Er ging iets mis, probeer opnieuw.'
                             })
                         });
                 }
@@ -67,14 +69,14 @@ const login = (req, res, next) => {
             //user doesnt exist
             return res.json({
                 status: 'error',
-                message: "Authorization failed"
+                message: "Deze gebruiker bestaat niet, registreer een account."
             })
         }
         bcrypt.compare(req.body.password, user[0].password, (err, result) => {
             if (err) {
                 return res.json({
                     status: 'error',
-                    message: 'Authorization failed'
+                    message: 'Wachtwoord is incorrect, probeer opnieuw.'
                 })
             }
             if (result) {
@@ -94,7 +96,7 @@ const login = (req, res, next) => {
             }
             res.json({
                 status: 'error',
-                message: 'Auth failed'
+                message: 'Wachtwoord is incorrect, probeer opnieuw.'
             })
         })
     })
