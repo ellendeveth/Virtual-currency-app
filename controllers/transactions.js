@@ -14,12 +14,12 @@ const add = async (req, res, next) => {
     const transaction = new Transaction({
         amount: amount,
         sender: decode,
-        receiver: receiver ,
+        receiver: receiver,
         reason: reason
     });
-    
-    User.findById(decode, (err, doc)=>{
-        if(doc.balance < amount ){
+
+    User.findById(decode, (err, doc) => {
+        if (doc.balance < amount) {
             res.json({
                 "status": "error",
                 "message": "You don't have enough money"
@@ -27,16 +27,16 @@ const add = async (req, res, next) => {
         } else {
             //update sender balance
             let newAmount = doc.balance - amount;
-            User.findByIdAndUpdate(decode, {balance: newAmount}, (err, doc)=>{
+            User.findByIdAndUpdate(decode, { balance: newAmount }, (err, doc) => {
 
                 //find receiver
-                User.find({"firstname":receiver}, (err, doc) =>{
+                User.find({ "username": receiver }, (err, doc) => {
                     let oldAmount = doc[0].balance;
                     let newAmountreceiver = oldAmount + parseInt(amount);
 
                     //update receiver balance
-                    User.findByIdAndUpdate(doc[0]._id, {balance: newAmountreceiver}, (err, doc)=>{ 
-                        transaction.save((err, result)=>{
+                    User.findByIdAndUpdate(doc[0]._id, { balance: newAmountreceiver }, (err, doc) => {
+                        transaction.save((err, result) => {
                             if (err) {
                                 res.json({
                                     "status": 'error',
@@ -53,8 +53,8 @@ const add = async (req, res, next) => {
                             }
                         })
                     })
-                })         
-            }) 
+                })
+            })
         }
     })
 }
@@ -63,12 +63,12 @@ const getAll = (req, res, next) => {
     // get all transactions from user
     let token = req.headers.authorization;
     let id = jwt.decode(token).userId;
-    let username = jwt.decode(token).firstname;
-    
-    Transaction.find({$or: [{"sender": id}, {"receiver": username}]}, (err, docs)=>{
-        if(!err){
-            User.find({"receiver": username}, (err, doc)=>{
-                if(!err){
+    let username = jwt.decode(token).username;
+
+    Transaction.find({ $or: [{ "sender": id }, { "receiver": username }] }, (err, docs) => {
+        if (!err) {
+            User.find({ "receiver": username }, (err, doc) => {
+                if (!err) {
                     res.json({
                         "status": "success",
                         "data": {
@@ -93,8 +93,8 @@ const getAll = (req, res, next) => {
 
 const getById = (req, res, next) => {
     // get transaction by id
-    Transaction.findById(req.params.id, (err, doc)=>{
-        if(!err){
+    Transaction.findById(req.params.id, (err, doc) => {
+        if (!err) {
             res.json({
                 "status": "success",
                 "data": {
