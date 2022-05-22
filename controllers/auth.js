@@ -10,7 +10,7 @@ const signup = (req, res, next) => {
             //er bestaat al een user met deze email
             return res.json({
                 status: 'error',
-                message: 'Deze gebruiker bestaat al.'
+                message: 'Deze gebruiker bestaat al. Log in met je account.'
             })
         }
         if (!email.includes("@student.thomasmore.be")) {
