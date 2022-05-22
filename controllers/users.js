@@ -28,11 +28,13 @@ const getAmount = (req, res, next) => {
     User.find({"_id":decode}, (err, doc) => {
         if(doc) {
             res.json({
+                "status": "success",
                 "userAmount": doc,
             });
         }
         else {
             res.json({
+                "status": "error",
                 "error": err,
                 "message": "Er ging iets mis, probeer opnieuw."
             });
