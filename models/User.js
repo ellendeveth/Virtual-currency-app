@@ -2,14 +2,29 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const userSchema = new Schema({
-    firstname: String,
-    lastname: String,
+    username: {
+        type: String,
+        required: true,
+        unique: true
+    },
+    firstname: {
+        type: String,
+        required: true
+    },
+    lastname: {
+        type: String,
+        required: true
+    },
     email: {
         type: String,
         unique: true,
+        required: true,
         match: /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/
     },
-    password: String,
+    password: {
+        type: String,
+        required: true
+    },
     balance: Number,
 });
 
