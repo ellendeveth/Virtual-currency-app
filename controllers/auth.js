@@ -85,7 +85,7 @@ const login = (req, res, next) => {
                     userId: user[0]._id,
                     username: user[0].username,
                 }, config.passwordToken, {
-                    expiresIn: "1h"
+                    expiresIn: "24h"
                 });
                 return res.json({
                     status: 'success',
