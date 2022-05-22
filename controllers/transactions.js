@@ -22,7 +22,7 @@ const add = async (req, res, next) => {
         if (doc.balance < amount) {
             res.json({
                 "status": "error",
-                "message": "You don't have enough money"
+                "message": "Je hebt te weinig coins!"
             })
         } else {
             //update sender balance
@@ -38,12 +38,12 @@ const add = async (req, res, next) => {
                     User.findByIdAndUpdate(doc[0]._id, { balance: newAmountreceiver }, (err, doc) => {
                         transaction.save((err, result) => {
                             if (err) {
-                                res.json({
+                                 res.json({
                                     "status": 'error',
-                                    "message": 'Could not make the transaction'
+                                    "message": 'Er ging iets mis, probeer opnieuw.'
                                 })
                             } else {
-                                res.json({
+                                 res.json({
                                     "status": 'success',
                                     "message": 'Transaction made',
                                     "data": {
@@ -78,13 +78,15 @@ const getAll = (req, res, next) => {
                     })
                 } else {
                     res.json({
-                        "status": "error"
+                        "status": "error",
+                        "message": "Er ging iets mis, probeer opnieuw."
                     })
                 }
             })
         } else {
             res.json({
-                "status": "error"
+                "status": "error",
+                "message": "Er ging iets mis, probeer opnieuw."
             })
         }
     })
@@ -103,7 +105,8 @@ const getById = (req, res, next) => {
             })
         } else {
             res.json({
-                "status": "error"
+                "status": "error",
+                "message": "Er ging iets mis, probeer opnieuw."
             })
         }
     })
