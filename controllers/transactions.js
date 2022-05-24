@@ -95,12 +95,22 @@ const getAll = (req, res, next) => {
 
 const getById = (req, res, next) => {
     // get transaction by id
-    Transaction.findById(req.params.id, (err, doc) => {
+    Transaction.findById(req.params.id, (err, docs) => {
         if (!err) {
-            res.json({
-                "status": "success",
-                "data": {
-                    "transaction": doc,
+            User.find({ "_id": docs.sender }, (err, doc) => {
+                if (!err) {
+                    res.json({
+                        "status": "success",
+                        "data": {
+                            "user": doc,
+                            "transaction": docs,
+                        }
+                    })
+                } else {
+                    res.json({
+                        "status": "error",
+                        "message": "Er ging iets mis, probeer opnieuw."
+                    })
                 }
             })
         } else {
