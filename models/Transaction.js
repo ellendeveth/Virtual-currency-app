@@ -6,7 +6,7 @@ const transactionSchema = new Schema({
     sender: Schema.Types.ObjectId,
     receiver: String,
     reason: String,
-});
+}, { timestamps: {} });
 
 const Transaction = mongoose.model('Transaction', transactionSchema);
 
