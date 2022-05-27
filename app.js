@@ -11,7 +11,7 @@ var usersRouter = require('./routes/users');
 var transactionsRouter = require('./routes/transactions');
 
 const mongoose = require('mongoose');
-mongoose.connect('mongodb+srv://alejandrodewolf:xCRA4KAHjON9LSRg@cluster0.iaqvg.mongodb.net/?retryWrites=true&w=majority');
+mongoose.connect('mongodb+srv://alejandrodewolf:xCRA4KAHjON9LSRg@cluster0.iaqvg.mongodb.net/?retryWrites=true&w=majority'); //mongodb://localhost:27017/currencyapp lokaal
 
 var app = express();
 
